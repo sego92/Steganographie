@@ -1,9 +1,11 @@
 package fileBMP;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Array;
 import java.sql.SQLException;
@@ -13,6 +15,12 @@ public class FileBMP {
 	private EnteteFichier enteteFichier;
 	private EnteteBMP EnteteBMP;
 	private Corps corpsBMP;
+	private byte octetBMP;
+	byte[] tabCorps;
+	private int indexTabCorps;
+	byte[] tabEnteteFichier;
+	byte[] tabEnteteBMP;
+
 	
 	
 
@@ -22,9 +30,7 @@ public class FileBMP {
 	
 	public void readFile(File file) {
 		FileInputStream fis;
-		byte[] tabEnteteFichier;
-		byte[] tabEnteteBMP;
-		byte[] tabCorps;
+		indexTabCorps = 0;
 		
 		try {
 			fis = new FileInputStream(file);
@@ -52,11 +58,6 @@ public class FileBMP {
 			EnteteBMP enteteBNP = new EnteteBMP();
 			enteteBNP.setImageSize(tabEnteteBNP2);
 			
-//			int h = (tabEnteteBMP[35]<<24)&0xff000000|
-//					(tabEnteteBMP[34]<<16)&0x00ff0000|
-//					(tabEnteteBMP[33]<< 8)&0x0000ff00|
-//					(tabEnteteBMP[32]<< 0)&0x000000ff;
-//			enteteBNP.setNumberColorPalette(h);
 			
 			int h = (tabEnteteBMP[15]<< 8)&0x0000ff00|
 				(tabEnteteBMP[14]<< 0)&0x000000ff;
@@ -73,8 +74,31 @@ public class FileBMP {
 		}
 	}
 
-	public void hidBits(Byte bitsToHide) {
-		// TODO Auto-generated method stub
+	public void hidBits(byte bitsToHide) {
+		octetBMP= tabCorps[indexTabCorps];
+		octetBMP = (byte) (octetBMP & 0xFC);
+		octetBMP = (byte) (octetBMP | bitsToHide);
+		tabCorps[indexTabCorps] = octetBMP;
+		indexTabCorps++;
+	}
+	
+	public void saveNewBMPFile (File file){
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream(file);
+			BufferedOutputStream bos = new BufferedOutputStream (fos);
+			bos.write(tabEnteteFichier);
+			bos.write(tabEnteteBMP);
+			bos.write(tabCorps);
+			bos.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		
 	}
 

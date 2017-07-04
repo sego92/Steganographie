@@ -19,13 +19,22 @@ public class Main {
 		
 		
 		
-//		TODO verifier que taille fichier ok	
-		Byte bitsToHide;
+//		TODO verifier que taille fichier ok	< oxFFFF
+		byte bitsToHide;
+		
+//		on cache la longueur du fichier a cacher dans 10 premiers octets du corps du fichierBMP
+		while ((bitsToHide=fileToHide.long2Bits()) != 0xff){
+			fileBMP.hidBits(bitsToHide);
+		}		
+		
+//		on cache les données du fichier dans fichierBMP
 		while ((bitsToHide=fileToHide.read2Bits()) != 0xff){
 			fileBMP.hidBits(bitsToHide);
 		}
 	
 //		TODO save le new fichier créer
+		File file3 = new File ("D:\\AgilityFactory\\newImageBMP.bmp");
+		fileBMP.saveNewBMPFile(file3);
 	}
 
 }

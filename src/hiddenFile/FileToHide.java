@@ -11,11 +11,15 @@ public class FileToHide {
 	private byte octet;
 	private int nbBitsRestant;
 	private FileInputStream fis;
+	private long sizeFileToSend;
+	private int nbBitsRestantSize;
 	
 	public FileToHide (File file) {
 		this.file = file;
 		sizeFile = file.length();
 		nbBitsRestant = 0;
+		sizeFileToSend = sizeFile;
+		nbBitsRestantSize = 16;
 		try {
 			fis = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
@@ -28,6 +32,8 @@ public class FileToHide {
 		file = new File(pathFile);
 		sizeFile = file.length();
 		nbBitsRestant = 0;
+		sizeFileToSend = sizeFile;
+		nbBitsRestantSize = 16;
 		try {
 			fis = new FileInputStream(file);
 		} catch (FileNotFoundException e) {
@@ -36,7 +42,15 @@ public class FileToHide {
 		}
 	}
 	
-
+	public byte long2Bits(){
+		if (nbBitsRestantSize == 0){
+			return (byte) 0xFF;
+		}
+		byte ret = (byte) (sizeFileToSend & 0x03);
+		sizeFileToSend = (byte) (sizeFileToSend >>>2);
+		nbBitsRestantSize -=2;
+		return ret;
+	}
 	
 	public byte read2Bits (){
 		if (nbBitsRestant == 0){
