@@ -23,8 +23,6 @@ public class EnteteBMP {
 	public byte[] getEnteteBNPSize() {
 		return enteteBNPSize;
 	}
-
-
 	public void setEnteteBNPSize(byte[] enteteBNPSize) {
 		this.enteteBNPSize = enteteBNPSize;
 	}
@@ -32,8 +30,6 @@ public class EnteteBMP {
 	public int getWidth() {
 		return width;
 	}
-
-
 	public void setWidth(int width) {
 		this.width = width;
 	}
@@ -42,8 +38,6 @@ public class EnteteBMP {
 	public int getHeight() {
 		return height;
 	}
-
-
 	public void setHeight(int height) {
 		this.height = height;
 	}
@@ -52,8 +46,6 @@ public class EnteteBMP {
 	public int getNumberColorPlane() {
 		return numberColorPlane;
 	}
-
-
 	public void setNumberColorPlane(int numberColorPlane) {
 		this.numberColorPlane = numberColorPlane;
 	}
@@ -63,8 +55,6 @@ public class EnteteBMP {
 	public int getCompressionMethod() {
 		return compressionMethod;
 	}
-
-
 	public void setCompressionMethod(int compressionMethod) {
 		this.compressionMethod = compressionMethod;
 	}
@@ -73,8 +63,6 @@ public class EnteteBMP {
 	public byte[] getImageSize() {
 		return imageSize;
 	}
-
-
 	public void setImageSize(byte[] imageSize) {
 		this.imageSize [0] = imageSize[0];
 		this.imageSize [1] = imageSize[1];
@@ -86,8 +74,6 @@ public class EnteteBMP {
 	public int getHoryzontalResolution() {
 		return horyzontalResolution;
 	}
-
-
 	public void setHoryzontalResolution(int horyzontalResolution) {
 		this.horyzontalResolution = horyzontalResolution;
 	}
@@ -96,8 +82,6 @@ public class EnteteBMP {
 	public int getVerticalResolution() {
 		return verticalResolution;
 	}
-
-
 	public void setVerticalResolution(int verticalResolution) {
 		this.verticalResolution = verticalResolution;
 	}
@@ -107,7 +91,6 @@ public class EnteteBMP {
 		return numberColorPalette;
 	}
 
-
 	public void setNumberColorPalette(int numberColorPalette) {
 		this.numberColorPalette = numberColorPalette;
 	}
@@ -116,8 +99,6 @@ public class EnteteBMP {
 	public int getNumberImportantColor() {
 		return numberImportantColor;
 	}
-
-
 	public void setNumberImportantColor(int numberImportantColor) {
 		this.numberImportantColor = numberImportantColor;
 	}
@@ -126,13 +107,11 @@ public class EnteteBMP {
 	public int getNumberBitsByPixel() {
 		return numberBitsByPixel;
 	}
-
-
-	public void setNumberBitsByPixel(int numberBitsByPixel) {
+	public void setNumberBitsByPixel(int numberBitsByPixel) throws Exception {
 		this.numberBitsByPixel = numberBitsByPixel;
+		if (numberBitsByPixel != 24){
+			throw new Exception ("Ce fichier BMP n'est pas en couleurs réelles");
+		}
 	}
 	
-	
-	
-
 }

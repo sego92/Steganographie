@@ -11,24 +11,23 @@ import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.Arrays;
 
+import hiddenFile.FileToHide;
+
 public class FileBMP {
 	private EnteteFichier enteteFichier;
 	private EnteteBMP EnteteBMP;
 	private Corps corpsBMP;
-	private byte octetBMP;
 	byte[] tabCorps;
 	private int indexTabCorps;
 	byte[] tabEnteteFichier;
 	byte[] tabEnteteBMP;
 
-	
-	
 
 	public FileBMP() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void readFile(File file) {
+	public void readFileBMP(File file) throws Exception {
 		FileInputStream fis;
 		indexTabCorps = 0;
 		
@@ -40,6 +39,8 @@ public class FileBMP {
 			bis.read(tabEnteteFichier);
 			EnteteFichier enteteFichier = new EnteteFichier();
 			enteteFichier.setSignature(tabEnteteFichier);
+			
+			
 			int j= (tabEnteteFichier[5]<<24)&0xff000000|
 				   (tabEnteteFichier[4]<<16)&0x00ff0000|
 				   (tabEnteteFichier[3]<< 8)&0x0000ff00|
@@ -75,6 +76,7 @@ public class FileBMP {
 	}
 
 	public void hidBits(byte bitsToHide) {
+		byte octetBMP;
 		octetBMP= tabCorps[indexTabCorps];
 		octetBMP = (byte) (octetBMP & 0xFC);
 		octetBMP = (byte) (octetBMP | bitsToHide);
@@ -98,6 +100,37 @@ public class FileBMP {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public byte[] readNewFileBMP (File file){
+		FileInputStream fis;
+		try {
+			fis = new FileInputStream(file);
+			BufferedInputStream bis = new BufferedInputStream(fis);
+			
+			byte[] tabVide = new byte[54];
+			bis.read(tabVide);
+			
+			byte[] tabLonguerHiddenFile = new byte [8];
+			bis.read(tabLonguerHiddenFile);
+			long nbOctet = FileToHide.sizeNewFile(tabLonguerHiddenFile);
+			System.out.println(nbOctet);
+			
+			byte[] tabData = new byte [(int) (nbOctet*4)];
+			bis.read(tabData);
+			byte[] data = FileToHide.dataNewFile(tabData);
+//			System.out.println(Arrays.toString(data));
+			return data;
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 		
 		
 	}

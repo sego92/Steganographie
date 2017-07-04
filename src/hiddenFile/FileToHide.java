@@ -44,7 +44,7 @@ public class FileToHide {
 	
 	public byte long2Bits(){
 		if (nbBitsRestantSize == 0){
-			return (byte) 0xFF;
+			return -1;
 		}
 		byte ret = (byte) (sizeFileToSend & 0x03);
 		sizeFileToSend = (byte) (sizeFileToSend >>>2);
@@ -63,7 +63,7 @@ public class FileToHide {
 				e.printStackTrace();
 			}
 			if(ret == -1){
-				return (byte) 0xFF;
+				return -1;
 			}
 			octet = tabByte[0];
 			nbBitsRestant = 8;
@@ -78,6 +78,32 @@ public class FileToHide {
 
 	public long getSizeFile() {
 		return sizeFile;
+	}
+	
+	public static long sizeNewFile (byte[]tabByte){
+		long longuerNewFile = 0;
+		for (int i=7; i>=0; i--){
+			byte x = (byte) (tabByte[i] & 0x03);
+			longuerNewFile = longuerNewFile << 2;
+			longuerNewFile = longuerNewFile | x;			
+		}
+		return longuerNewFile;
+	}
+	
+	public static byte[] dataNewFile (byte[]tabByte){
+		byte[] data = new byte[tabByte.length/4];
+		
+		for (int j=0; j < data.length; j++){
+			data[j] = 0;
+			for (int i=3; i>=0; i--){
+				byte x = (byte) (tabByte[(j*4)+i] & 0x03);
+				data[j] = (byte) (data[j] << 2);
+				data[j] = (byte) (data[j] | x);			
+			}
+		
+		}
+		
+		return data;
 	}
 
 	
