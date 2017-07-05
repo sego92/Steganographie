@@ -12,12 +12,12 @@ import hiddenFile.FileToHide;
 public class Main {
 
 	public static void main(String[] args) throws Exception{
-		File file = new File ("D:\\AgilityFactory\\imageBMP.bmp");
+		File file = new File ("D:\\AgilityFactory\\test\\imageBMP.bmp");
 		FileBMP fileBMP = new FileBMP();
 		fileBMP.readFileBMP(file);		
 		
 		
-		File file2 = new File ("D:\\AgilityFactory\\imageCache.png");
+		File file2 = new File ("D:\\AgilityFactory\\test\\imageCache.png");
 		FileToHide fileToHide = new FileToHide(file2);
 		
 		if (!fileToHide.isEnoughtOctetToHide(fileBMP.getImageSize())){
@@ -26,7 +26,7 @@ public class Main {
 		}
 		
 		byte bitsToHide;
-		
+		System.out.println(fileToHide.getSizeFile());
 //		on cache longueur de FileToHide
 		while ((bitsToHide=fileToHide.long2Bits()) != -1){
 			fileBMP.hidBits(bitsToHide);	
@@ -38,14 +38,14 @@ public class Main {
 		}
 	
 //		on sauvegarde le new fichier créer
-		File file3 = new File ("D:\\AgilityFactory\\newImageBMP.bmp");
+		File file3 = new File ("D:\\AgilityFactory\\test\\newImageBMP.bmp");
 		fileBMP.saveNewBMPFile(file3);
 		
 		
 //		on recupere le fichier cache
 		byte[] data = fileBMP.readNewFileBMP(file3);
 		if (data !=null){
-			File file4 = new File ("D:\\AgilityFactory\\newImageCache.png");
+			File file4 = new File ("D:\\AgilityFactory\\test\\newImageCache.png");
 			FileOutputStream fos;
 			try {
 				fos = new FileOutputStream(file4);
