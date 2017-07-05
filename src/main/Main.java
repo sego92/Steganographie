@@ -16,33 +16,28 @@ public class Main {
 		FileBMP fileBMP = new FileBMP();
 		fileBMP.readFileBMP(file);		
 		
-//		TODO verifier que fileBNP ok (fichier = fichierBMP et fichier en couleur reelle
 		
-//		File file2 = new File ("D:\\AgilityFactory\\imageCache.png");
 		File file2 = new File ("D:\\AgilityFactory\\imageCache.png");
 		FileToHide fileToHide = new FileToHide(file2);
 		
+		if (!fileToHide.isEnoughtOctetToHide(fileBMP.getImageSize())){
+			System.out.println("le fichier BMP est trop petit pour cacher le fichier choisi");
+			System.exit(-1);
+		}
 		
-		
-//		TODO verifier que taille fichier ok	< oxFFFF
 		byte bitsToHide;
 		
-//		on cache la longueur du fichier a cacher dans 10 premiers octets du corps du fichierBMP
-		do {
-			bitsToHide = fileToHide.long2Bits();
-			
-			if (bitsToHide != -1)
-				fileBMP.hidBits(bitsToHide);
-			
-		} while (bitsToHide != -1);
-			
+//		on cache longueur de FileToHide
+		while ((bitsToHide=fileToHide.long2Bits()) != -1){
+			fileBMP.hidBits(bitsToHide);	
+		}
 		
 //		on cache les données du fichier dans fichierBMP
 		while ((bitsToHide=fileToHide.read2Bits()) != -1){
 			fileBMP.hidBits(bitsToHide);
 		}
 	
-//		TODO on sauvegarde le new fichier créer
+//		on sauvegarde le new fichier créer
 		File file3 = new File ("D:\\AgilityFactory\\newImageBMP.bmp");
 		fileBMP.saveNewBMPFile(file3);
 		

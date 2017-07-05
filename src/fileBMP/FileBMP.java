@@ -7,16 +7,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.sql.SQLException;
 import java.util.Arrays;
 
 import hiddenFile.FileToHide;
 
 public class FileBMP {
 	private EnteteFichier enteteFichier;
-	private EnteteBMP EnteteBMP;
-	private Corps corpsBMP;
+	private EnteteBMP enteteBMP;
 	byte[] tabCorps;
 	private int indexTabCorps;
 	byte[] tabEnteteFichier;
@@ -37,7 +34,7 @@ public class FileBMP {
 			
 			tabEnteteFichier = new byte[14];
 			bis.read(tabEnteteFichier);
-			EnteteFichier enteteFichier = new EnteteFichier();
+			enteteFichier = new EnteteFichier();
 			enteteFichier.setSignature(tabEnteteFichier);
 			
 			
@@ -54,24 +51,31 @@ public class FileBMP {
 			enteteFichier.setOffset(j);
 			
 			tabEnteteBMP = new byte [40];
-			byte[] tabEnteteBNP2 = Arrays.copyOfRange(tabEnteteBMP, 20, tabEnteteBMP.length);
+			
 			bis.read(tabEnteteBMP);
-			EnteteBMP enteteBNP = new EnteteBMP();
-			enteteBNP.setImageSize(tabEnteteBNP2);
+			enteteBMP = new EnteteBMP();
+			
+			int k = (tabEnteteBMP[23]<<24)&0xff000000|
+					(tabEnteteBMP[22]<<16)&0x00ff0000|
+					(tabEnteteBMP[21]<< 8)&0x0000ff00|
+					(tabEnteteBMP[20]<< 0)&0x000000ff;
+			enteteBMP.setImageSize(k);
 			
 			
 			int h = (tabEnteteBMP[15]<< 8)&0x0000ff00|
 				(tabEnteteBMP[14]<< 0)&0x000000ff;
-			enteteBNP.setNumberBitsByPixel(h);
+			enteteBMP.setNumberBitsByPixel(h);
 			
 			tabCorps = new byte [(int) (file.length()-54)];
 			bis.read(tabCorps);
+			bis.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		}
 	}
 
@@ -120,7 +124,8 @@ public class FileBMP {
 			byte[] tabData = new byte [(int) (nbOctet*4)];
 			bis.read(tabData);
 			byte[] data = FileToHide.dataNewFile(tabData);
-//			System.out.println(Arrays.toString(data));
+			System.out.println(Arrays.toString(data));
+			bis.close();
 			return data;
 			
 		} catch (FileNotFoundException e) {
@@ -133,6 +138,10 @@ public class FileBMP {
 		return null;
 		
 		
+	}
+	
+	public int getImageSize (){
+		return enteteBMP.getImageSize();
 	}
 
 }	

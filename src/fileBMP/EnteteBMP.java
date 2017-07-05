@@ -8,7 +8,7 @@ public class EnteteBMP {
 	private int numberColorPlane;
 	private int numberBitsByPixel;
 	private int compressionMethod;
-	private byte[] imageSize = new byte[4];
+	private int imageSize;
 	private int horyzontalResolution;
 	private int verticalResolution;
 	private int numberColorPalette;
@@ -60,16 +60,6 @@ public class EnteteBMP {
 	}
 
 
-	public byte[] getImageSize() {
-		return imageSize;
-	}
-	public void setImageSize(byte[] imageSize) {
-		this.imageSize [0] = imageSize[0];
-		this.imageSize [1] = imageSize[1];
-		this.imageSize [2] = imageSize[2];
-		this.imageSize [3] = imageSize[3];
-	}
-
 
 	public int getHoryzontalResolution() {
 		return horyzontalResolution;
@@ -112,6 +102,16 @@ public class EnteteBMP {
 		if (numberBitsByPixel != 24){
 			throw new Exception ("Ce fichier BMP n'est pas en couleurs réelles");
 		}
+	}
+
+
+	public int getImageSize() {
+		return imageSize;
+	}
+
+
+	public void setImageSize(int imageSize) {
+		this.imageSize = imageSize;
 	}
 	
 }

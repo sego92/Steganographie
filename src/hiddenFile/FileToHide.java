@@ -42,7 +42,10 @@ public class FileToHide {
 		}
 	}
 	
-	public byte long2Bits(){
+	public byte long2Bits() throws Exception{
+		if (sizeFile >0xFFFF){
+			throw new Exception ("Le fichier a cache est trop gros, il doit faire moins de 65535 octets");
+		}
 		if (nbBitsRestantSize == 0){
 			return -1;
 		}
@@ -106,5 +109,12 @@ public class FileToHide {
 		return data;
 	}
 
+	public boolean isEnoughtOctetToHide (int lenght){
+		if (lenght < (sizeFile +2)*4)
+			return false;
+		
+		return true;
+		
+	}
 	
 }
